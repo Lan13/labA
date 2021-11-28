@@ -539,16 +539,16 @@ int assembler::assemble(std::string input_filename, std::string output_filename)
 			else if (word == ".STRINGZ") {
 				// Fill string here
 				// TO BE DONE
-                std::string insert_str;
-                line_stringstream >> insert_str;
-                int len = insert_str.length();
-                for (int i = 1; i <= len - 2; i++)
-                {
-                    int tran_num = insert_str[i];
-                    auto bin = NumberToAssemble(tran_num);
-                    output_file << bin << std::endl;
-                }
-                    output_file << "0000000000000000" << std::endl;
+                		std::string insert_str;
+                		line_stringstream >> insert_str;
+                		int len = insert_str.length();
+                		for (int i = 1; i <= len - 2; i++)
+                		{
+                    			int tran_num = insert_str[i];
+                    			auto bin = NumberToAssemble(tran_num);
+                    			output_file << bin << std::endl;
+                		}
+                    		output_file << "0000000000000000" << std::endl;
 			}
 
 			continue;
