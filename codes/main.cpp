@@ -78,11 +78,11 @@ int main(int argc, char **argv) {
 		SetHexMode(true);
 	}
 
-//	auto ass = assembler();
-//	auto status = ass.assemble(input_filename, output_filename);
+    auto ass = assembler();
+    auto status = ass.assemble(input_filename, output_filename);
 
-//	if (gIsErrorLogMode) {
-//		cout << std::dec << status << endl;
-//	}
+    if (gIsErrorLogMode) {
+        cout << std::dec << status << endl;
+    }
 	return 0;
 }
