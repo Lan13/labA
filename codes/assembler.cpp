@@ -1,8 +1,8 @@
 /*
- * @Author       : 
- * @Date         : 
- * @LastEditors  : 
- * @LastEditTime : 
+ * @Author       : Junwei Lan
+ * @Date         : 2021-11-30
+ * @LastEditors  :
+ * @LastEditTime : 2021-11-30-8:23
  * @Description  : file content
  */
 
@@ -256,7 +256,15 @@ int assembler::assemble(std::string input_filename, std::string output_filename)
 			std::string origin_line = line;
 			// Convert `line` into upper case
 			// TO BE DONE
-			transform(line.begin(), line.end(), line.begin(), ::toupper);
+			if (line.find("\"") == std::string::npos)
+				transform(line.begin(), line.end(), line.begin(), ::toupper);
+			else
+			{
+				auto position = line.find("\"");
+				for (int i = 0; i < position; i++)
+					if (line[i] <= 'z' && line[i] >= 'a')
+						line[i] = line[i] - 32;
+			}
 			// Store comments
 			auto comment_position = line.find(";");
 			if (comment_position == std::string::npos) {
@@ -533,22 +541,29 @@ int assembler::assemble(std::string input_filename, std::string output_filename)
 					return -5;
 				}
 				std::string output_line = "0000000000000000";
+				if (gIsHexMode)
+					output_line = ConvertBin2Hex(output_line);
 				for (int i = 1; i <= num_temp; i++)
 					output_file << output_line << std::endl;
 			}
 			else if (word == ".STRINGZ") {
 				// Fill string here
 				// TO BE DONE
-                std::string insert_str;
-                line_stringstream >> insert_str;
-                int len = insert_str.length();
-                for (int i = 1; i <= len - 2; i++)
-                {
-                    int tran_num = insert_str[i];
-                    auto bin = NumberToAssemble(tran_num);
-                    output_file << bin << std::endl;
-                }
-                    output_file << "0000000000000000" << std::endl;
+				std::string insert_str;
+				line_stringstream >> insert_str;
+				int len = insert_str.length();
+				for (int i = 1; i <= len - 2; i++)
+				{
+					int tran_num = insert_str[i];
+					auto bin = NumberToAssemble(tran_num);
+					if (gIsHexMode)
+						bin = ConvertBin2Hex(bin);
+					output_file << bin << std::endl;
+				}
+				if (gIsHexMode)
+					output_file << "0000" << std::endl;
+				else
+					output_file << "0000000000000000" << std::endl;
 			}
 
 			continue;
